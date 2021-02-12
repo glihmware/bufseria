@@ -1,0 +1,9 @@
+# ignore VS files
+**/.vs/**
+
+# ignore builds
+/**/bin/**
+/**/obj/**
+
+
+/**/LocalRef/**
