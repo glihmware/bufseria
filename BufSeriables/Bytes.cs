@@ -7,27 +7,27 @@ namespace BufSeria
   public static partial class Serial
   {
 
-    /// <summary> Serializes a memory stream. </summary>
+    /// <summary> Serializes an array of bytes. </summary>
     /// 
     /// <param name="src"> Stream to be serialized. </param>
-    /// <param name="dst"> Memory stream where the bytes are written. </param>
+    /// <param name="ms"> Memory stream where the bytes are written. </param>
     /// 
     public static void
-    StreamToBuf(MemoryStream src, MemoryStream dst)
+    BytesToBuf(byte[] buf, MemoryStream ms)
     {
-      if (src == null)
+      if (buf == null)
       {
-        LenSerial.EncodeNull(dst);
+        LenSerial.EncodeNull(ms);
         return;
       }
 
-      LenSerial.Encode((int)src.Length, dst);
-      src.WriteTo(dst);
+      LenSerial.Encode((int)buf.Length, ms);
+      ms.Append(buf);
     }
 
     /// <summary> Deserializes a stream. </summary>
     /// 
-    /// <param name="buf"> Stream serialized buffer. </param>
+    /// <param name="buf"> Bytes serialized buffer. </param>
     /// <param name="offset"> Byte offset where deserialization starts. </param>
     /// <param name="forward"> Number of bytes consumed to deserialized. </param>
     /// 
@@ -35,15 +35,15 @@ namespace BufSeria
     ///
     /// <exception cref = "BufSeriaException" > Deserialization can't occur. </exception>
     /// 
-    public static MemoryStream
-    BufToStream(byte[] buf, int offset, ref int byteFwd)
+    public static byte[]
+    BufToBytes(byte[] buf, int offset, ref int byteFwd)
     {
       int idx = offset;
       int len = LenSerial.Decode(buf, idx, ref idx);
 
       if (len < 0)
       {
-        // Stream was null.
+        // byte[] was null.
         byteFwd += (idx - offset);
         return null;
       }
@@ -51,17 +51,16 @@ namespace BufSeria
       if (len == 0)
       {
         byteFwd += (idx - offset);
-        return new MemoryStream();
+        return new byte[0];
       }
 
       byte[] arr = new byte[len];
       Array.Copy(buf, idx, arr, 0, len);
-      MemoryStream ms = new MemoryStream(arr);
 
       idx += len;
 
       byteFwd += (idx - offset);
-      return ms;
+      return arr;
     }
   }
 
