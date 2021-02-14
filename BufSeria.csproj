@@ -15,6 +15,9 @@ BufSeria allows a total control to serialize C# variables into a buffer, in a bi
     <PackageProjectUrl>https://github.com/glihmware/bufseria.git</PackageProjectUrl>
     <RepositoryUrl>https://github.com/glihmware/bufseria.git</RepositoryUrl>
     <PackageTags>Serialization</PackageTags>
+    <AssemblyVersion>1.0.0.0</AssemblyVersion>
+    <FileVersion>1.0.0.0</FileVersion>
+    <Version>1.0.1</Version>
   </PropertyGroup>
 
 </Project>
