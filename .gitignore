@@ -4,6 +4,3 @@
 # ignore builds
 /**/bin/**
 /**/obj/**
-
-
-/**/LocalRef/**

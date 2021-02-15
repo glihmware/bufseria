@@ -3,6 +3,10 @@ using System.IO;
 
 namespace BufSeria
 {
+
+  /// <summary>
+  ///   Defines methods to serialize / deserialize objects in binary format.
+  /// </summary>
   public interface IBufSeriable
   {
 

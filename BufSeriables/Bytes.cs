@@ -9,7 +9,7 @@ namespace BufSeria
 
     /// <summary> Serializes an array of bytes. </summary>
     /// 
-    /// <param name="src"> Stream to be serialized. </param>
+    /// <param name="buf"> Stream to be serialized. </param>
     /// <param name="ms"> Memory stream where the bytes are written. </param>
     /// 
     public static void
@@ -29,7 +29,7 @@ namespace BufSeria
     /// 
     /// <param name="buf"> Bytes serialized buffer. </param>
     /// <param name="offset"> Byte offset where deserialization starts. </param>
-    /// <param name="forward"> Number of bytes consumed to deserialized. </param>
+    /// <param name="byteFwd"> Number of bytes consumed to deserialized. </param>
     /// 
     /// <returns> Deserialized stream, or null. </returns>
     ///

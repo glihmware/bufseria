@@ -4,16 +4,25 @@ using System.IO;
 
 namespace BufSeria
 {
+  /// <summary>
+  ///   Encoded lengths.
+  /// </summary>
   public enum EncodedLen
   {
 
-    // Encoded length is in the two following bytes.
+    /// <summary>
+    ///   The length is encoded in two bytes.
+    /// </summary>
     L16 = 253,
 
-    // Encoded length is in the four following bytes.
+    /// <summary>
+    ///   The length is encoded in four bytes.
+    /// </summary>
     L32 = 254,
 
-    // Encoded length for a object set to null.
+    /// <summary>
+    ///   Special value to encode a variable set to NULL.
+    /// </summary>
     NULL = 255,
 
     // FIXME: is U64 really needed?
