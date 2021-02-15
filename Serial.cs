@@ -5,7 +5,7 @@ namespace BufSeria
 {
 
   /// <summary>
-  /// 
+  ///   Main serialization class.
   /// </summary>
   public static partial class Serial
   {

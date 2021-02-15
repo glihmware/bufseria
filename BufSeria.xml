@@ -1,0 +1,218 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>BufSeria</name>
+    </assembly>
+    <members>
+        <member name="T:BufSeria.LenSerial">
+            <summary>
+              Length representation in a serialized buffer.
+            </summary>
+        </member>
+        <member name="M:BufSeria.LenSerial.EncodeNull(System.IO.MemoryStream)">
+             <summary>
+               Encodes the NULL value as a length.
+             </summary>
+            
+             <param name="ms"> MemoryStream where NULL value should be encoded. </param>
+             
+             <returns> 1, the number of byte added to the stream. </returns>
+             
+        </member>
+        <member name="M:BufSeria.LenSerial.Encode(System.Int32,System.IO.MemoryStream)">
+            <summary>
+              Encodes a length in the given stream.
+            </summary>
+            
+            <param name="len"> Length to be encoded. </param>
+            <param name="ms"> MemoryStream where the encoded length is added. </param>
+            
+            <returns> Number of bytes for the encoded length. </returns>
+            
+        </member>
+        <member name="M:BufSeria.LenSerial.Decode(System.ReadOnlySpan{System.Byte},System.Int32,System.Int32@)">
+            <summary>
+              Decodes a encoded length into the given buffer.
+            </summary>
+            
+            <param name="buf"> Buffer containing the encoded length. </param>
+            <param name="offset"> Offset of the first byte of the encoded length into the buffer. </param>
+            <param name="byteFwd"> Incremented by the number of bytes used to decode the length. </param>
+            
+            <returns> Decoded length value. </returns>
+            
+            <exception cref="T:System.IndexOutOfRangeException"> The buffer is too short to decode the length. </exception>
+            <exception cref="T:System.ArgumentOutOfRangeException"> Use of ToUInt16(), toUInt32(). </exception>
+            <exception cref="T:BufSeria.BufSeriaException"> Provided offset is lower than 0. </exception>
+            
+        </member>
+        <member name="T:BufSeria.Serial">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:BufSeria.Serial.BytesToBuf(System.Byte[],System.IO.MemoryStream)">
+            <summary> Serializes an array of bytes. </summary>
+            
+            <param name="src"> Stream to be serialized. </param>
+            <param name="ms"> Memory stream where the bytes are written. </param>
+            
+        </member>
+        <member name="M:BufSeria.Serial.BufToBytes(System.Byte[],System.Int32,System.Int32@)">
+             <summary> Deserializes a stream. </summary>
+             
+             <param name="buf"> Bytes serialized buffer. </param>
+             <param name="offset"> Byte offset where deserialization starts. </param>
+             <param name="forward"> Number of bytes consumed to deserialized. </param>
+             
+             <returns> Deserialized stream, or null. </returns>
+            
+             <exception cref = "T:BufSeria.BufSeriaException" > Deserialization can't occur. </exception>
+             
+        </member>
+        <member name="M:BufSeria.Serial.CollectionToBuf``1(System.Collections.Generic.ICollection{``0},System.IO.MemoryStream)">
+            <summary>
+              Serializes any object implementing ICollection interface.
+            </summary>
+            
+            <typeparam name="T"></typeparam>
+            <param name="c"></param>
+            <param name="ms"></param>
+            
+        </member>
+        <member name="M:BufSeria.Serial.BufToCollection``1(System.Byte[],System.Int32,System.Int32@,System.Collections.Generic.ICollection{``0})">
+            <summary>
+              Deserializes any object implementing ICollection interface.
+              
+              Output collection (`c`) is cleared if the serialized collection was not null.
+            </summary>
+            
+            <typeparam name="T"></typeparam>
+            
+            <param name="buf"></param>
+            <param name="offset"></param>
+            <param name="fwd"></param>
+            <param name="list"></param>
+            
+            <returns> True if the list was null, false otherwise. </returns>
+            
+        </member>
+        <member name="M:BufSeria.Serial.CollectionToBuf(System.Collections.Generic.ICollection{System.String},System.IO.MemoryStream)">
+            <summary>
+              Serializes a collection of strings.
+            </summary>
+            
+            <param name="c"></param>
+            <param name="ms"></param>
+            
+        </member>
+        <member name="M:BufSeria.Serial.BufToCollection(System.Byte[],System.Int32,System.Int32@,System.Collections.Generic.ICollection{System.String})">
+            <summary>
+              Deserializes a collection of strings.
+              
+              Output collection (`c`) is cleared if the serialized collection was not null.
+            </summary>
+            
+            <param name="buf"></param>
+            <param name="offset"></param>
+            <param name="fwd"></param>
+            <param name="list"></param>
+            
+            <returns> True if the list was null, false otherwise. </returns>
+            
+        </member>
+        <member name="M:BufSeria.Serial.StreamToBuf(System.IO.MemoryStream,System.IO.MemoryStream)">
+            <summary> Serializes a memory stream. </summary>
+            
+            <param name="src"> Stream to be serialized. </param>
+            <param name="dst"> Memory stream where the bytes are written. </param>
+            
+        </member>
+        <member name="M:BufSeria.Serial.BufToStream(System.Byte[],System.Int32,System.Int32@)">
+             <summary> Deserializes a stream. </summary>
+             
+             <param name="buf"> Stream serialized buffer. </param>
+             <param name="offset"> Byte offset where deserialization starts. </param>
+             <param name="forward"> Number of bytes consumed to deserialized. </param>
+             
+             <returns> Deserialized stream, or null. </returns>
+            
+             <exception cref = "T:BufSeria.BufSeriaException" > Deserialization can't occur. </exception>
+             
+        </member>
+        <member name="M:BufSeria.Serial.StringToBuf(System.String,System.IO.MemoryStream)">
+            <summary>
+              Serializes a string using UTF-8 encoding.
+            </summary>
+            
+            <param name="s"> String to be serialized. </param>
+            <param name="ms"> MemoryStream where the bytes are written. </param>
+            
+            <returns> Number of bytes serialized. </returns>
+            
+        </member>
+        <member name="M:BufSeria.Serial.BufToString(System.ReadOnlySpan{System.Byte},System.Int32,System.Int32@)">
+            <summary>
+              Deserializes a string from a buffer.
+            </summary>
+            
+            <param name="buf"> Buffer contaning the serialized form. </param>
+            <param name="offset"> Offset from where deserialization starts. </param>
+            <param name="byteFwd"> Incremented by the number of bytes used to deserialized. </param>
+            
+            <returns> Deserialized string. </returns>
+            
+            <exception cref = "T:BufSeria.BufSeriaLenException"> Length decoded error. </exception>
+            
+        </member>
+        <!-- Badly formed XML comment ignored for member "M:BufSeria.Serial.BufToString(System.Byte[])" -->
+        <member name="M:BufSeria.Serial.CheckForSafeEndianness">
+            <summary>
+              Checks if the endianness is supported to be able to serialize / deserialize interoperable data.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:BufSeria.IBufSeriable.Serialize">
+            <summary>
+              Generates a buffer with the serialized object.
+            </summary>
+            
+            <returns> A buffer contaning the serialized object. </returns>
+            
+        </member>
+        <member name="M:BufSeria.IBufSeriable.Deserialize(System.Byte[],System.Int32,System.Int32@)">
+            <summary>
+              Constructs the object from a buffer containing it's serialized form.
+            </summary>
+            
+            <param name="buf"> Bufer containing the serialized object. </param>
+            <param name="offset"> Offset in the buffer from where the deserialization starts. </param>
+            <param name="byteFwd"> Incremented by the number of bytes used to deserialize the object. </param>
+            
+        </member>
+        <member name="T:BufSeria.MemoryStreamExt">
+            <summary>
+              Convenient MemoryStream extension for shorter syntax.
+            </summary>
+            
+        </member>
+        <member name="M:BufSeria.MemoryStreamExt.Append(System.IO.MemoryStream,System.Byte)">
+            <summary>
+              Adds a byte to the stream.
+            </summary>
+            
+            <param name="stream"> MemoryStream where the byte is added. </param>
+            <param name="b"> Byte to be added. </param>
+            
+        </member>
+        <member name="M:BufSeria.MemoryStreamExt.Append(System.IO.MemoryStream,System.ReadOnlySpan{System.Byte})">
+            <summary>
+              Appends an entire buffer to a memory stream.
+            </summary>
+            
+            <param name="stream"> MemoryStream where the buffer is added. </param>
+            <param name="buf"> The buffer to be added, from the very first byte to the end of the array. </param>
+            
+        </member>
+    </members>
+</doc>

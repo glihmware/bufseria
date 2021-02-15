@@ -47,8 +47,8 @@ namespace BufSeria
     /// 
     /// <param name="buf"></param>
     /// <param name="offset"></param>
-    /// <param name="fwd"></param>
-    /// <param name="list"></param>
+    /// <param name="byteFwd"></param>
+    /// <param name="c"></param>
     /// 
     /// <returns> True if the list was null, false otherwise. </returns>
     /// 
