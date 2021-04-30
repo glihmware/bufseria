@@ -4,6 +4,26 @@
         <name>BufSeria</name>
     </assembly>
     <members>
+        <member name="T:BufSeria.EncodedLen">
+            <summary>
+              Encoded lengths.
+            </summary>
+        </member>
+        <member name="F:BufSeria.EncodedLen.L16">
+            <summary>
+              The length is encoded in two bytes.
+            </summary>
+        </member>
+        <member name="F:BufSeria.EncodedLen.L32">
+            <summary>
+              The length is encoded in four bytes.
+            </summary>
+        </member>
+        <member name="F:BufSeria.EncodedLen.NULL">
+            <summary>
+              Special value to encode a variable set to NULL.
+            </summary>
+        </member>
         <member name="T:BufSeria.LenSerial">
             <summary>
               Length representation in a serialized buffer.
@@ -48,13 +68,13 @@
         </member>
         <member name="T:BufSeria.Serial">
             <summary>
-            
+              Main serialization class.
             </summary>
         </member>
         <member name="M:BufSeria.Serial.BytesToBuf(System.Byte[],System.IO.MemoryStream)">
             <summary> Serializes an array of bytes. </summary>
             
-            <param name="src"> Stream to be serialized. </param>
+            <param name="buf"> Stream to be serialized. </param>
             <param name="ms"> Memory stream where the bytes are written. </param>
             
         </member>
@@ -63,7 +83,7 @@
              
              <param name="buf"> Bytes serialized buffer. </param>
              <param name="offset"> Byte offset where deserialization starts. </param>
-             <param name="forward"> Number of bytes consumed to deserialized. </param>
+             <param name="byteFwd"> Number of bytes consumed to deserialized. </param>
              
              <returns> Deserialized stream, or null. </returns>
             
@@ -91,8 +111,8 @@
             
             <param name="buf"></param>
             <param name="offset"></param>
-            <param name="fwd"></param>
-            <param name="list"></param>
+            <param name="byteFwd"></param>
+            <param name="c"></param>
             
             <returns> True if the list was null, false otherwise. </returns>
             
@@ -171,6 +191,11 @@
               Checks if the endianness is supported to be able to serialize / deserialize interoperable data.
             </summary>
             <returns></returns>
+        </member>
+        <member name="T:BufSeria.IBufSeriable">
+            <summary>
+              Defines methods to serialize / deserialize objects in binary format.
+            </summary>
         </member>
         <member name="M:BufSeria.IBufSeriable.Serialize">
             <summary>
