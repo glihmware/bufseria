@@ -16,19 +16,21 @@ namespace BufSeria
     /// 
     /// <returns> A buffer contaning the serialized object. </returns>
     /// 
-    byte[]
-    Serialize();
+    byte[] Serialize();
+
+    
 
     /// <summary>
     ///   Constructs the object from a buffer containing it's serialized form.
     /// </summary>
     /// 
     /// <param name="buf"> Bufer containing the serialized object. </param>
-    /// <param name="offset"> Offset in the buffer from where the deserialization starts. </param>
-    /// <param name="byteFwd"> Incremented by the number of bytes used to deserialize the object. </param>
+    /// <param name="offset">
+    ///    Offset in the buffer from where the deserialization starts.
+    ///    The offset will be moved forward by the bytes consumed by deserialization.
+    /// </param>
     /// 
-    void
-    Deserialize(byte[] buf, int offset, ref int byteFwd);
+    void Deserialize(ReadOnlySpan<byte> buf, ref int offset);
 
   }
 }

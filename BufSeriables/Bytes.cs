@@ -21,7 +21,7 @@ namespace BufSeria
         return;
       }
 
-      LenSerial.Encode((int)buf.Length, ms);
+      LenSerial.Encode(buf.Length, ms);
       ms.Append(buf);
     }
 
@@ -29,37 +29,33 @@ namespace BufSeria
     /// 
     /// <param name="buf"> Bytes serialized buffer. </param>
     /// <param name="offset"> Byte offset where deserialization starts. </param>
-    /// <param name="byteFwd"> Number of bytes consumed to deserialized. </param>
     /// 
     /// <returns> Deserialized stream, or null. </returns>
     ///
     /// <exception cref = "BufSeriaException" > Deserialization can't occur. </exception>
     /// 
     public static byte[]
-    BufToBytes(byte[] buf, int offset, ref int byteFwd)
+    BufToBytes(ReadOnlySpan<byte> buf, ref int offset)
     {
       int idx = offset;
-      int len = LenSerial.Decode(buf, idx, ref idx);
+      int len = LenSerial.Decode(buf, ref offset);
 
       if (len < 0)
       {
-        // byte[] was null.
-        byteFwd += (idx - offset);
         return null;
       }
 
       if (len == 0)
       {
-        byteFwd += (idx - offset);
         return new byte[0];
       }
 
       byte[] arr = new byte[len];
-      Array.Copy(buf, idx, arr, 0, len);
+      Span<byte> s = new Span<byte>(arr);
 
-      idx += len;
+      buf.Slice(offset, len).CopyTo(s);
 
-      byteFwd += (idx - offset);
+      offset += len;
       return arr;
     }
   }

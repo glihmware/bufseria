@@ -7,7 +7,12 @@ namespace BufSeria
   public static partial class Serial
   {
 
-    // Float.
+    /// <summary>
+    ///   Float serialization.
+    /// </summary>
+    /// <param name="f"></param>
+    /// <param name="ms"></param>
+    /// <returns></returns>
     public static int
     FloatToBuf(float f, MemoryStream ms)
     {
@@ -15,18 +20,28 @@ namespace BufSeria
       return 4;
     }
 
+    /// <summary>
+    ///   Float deserialization.
+    /// </summary>
+    /// <param name="buf"></param>
+    /// <param name="offset"></param>
+    /// <returns></returns>
     public static float
-    BufToFloat(ReadOnlySpan<byte> buf, int offset, ref int byteFwd)
+    BufToFloat(ReadOnlySpan<byte> buf, ref int offset)
     {
-
       float f = BitConverter.ToSingle(buf.ToArray(), offset);
 
-      byteFwd += 4;
+      offset += 4;
       return f;
     }
 
 
-    // Double.
+    /// <summary>
+    ///   Double serialization.
+    /// </summary>
+    /// <param name="d"></param>
+    /// <param name="ms"></param>
+    /// <returns></returns>
     public static int
     DoubleToBuf(double d, MemoryStream ms)
     {
@@ -34,13 +49,19 @@ namespace BufSeria
       return 8;
     }
 
-    public static double
-    BufToDouble(ReadOnlySpan<byte> buf, int offset, ref int byteFwd)
-    {
 
+    /// <summary>
+    ///   Double deserialization.
+    /// </summary>
+    /// <param name="buf"></param>
+    /// <param name="offset"></param>
+    /// <returns></returns>
+    public static double
+    BufToDouble(ReadOnlySpan<byte> buf, ref int offset)
+    {
       double d = BitConverter.ToDouble(buf.ToArray(), offset);
 
-      byteFwd += 8;
+      offset  += 8;
       return d;
     }
 

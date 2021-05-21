@@ -49,21 +49,18 @@ namespace BufSeria
     /// 
     /// <param name="buf"> Buffer contaning the serialized form. </param>
     /// <param name="offset"> Offset from where deserialization starts. </param>
-    /// <param name="byteFwd"> Incremented by the number of bytes used to deserialized. </param>
     /// 
     /// <returns> Deserialized string. </returns>
     /// 
     /// <exception cref = "BufSeriaLenException"> Length decoded error. </exception>
     /// 
     public static string
-    BufToString(ReadOnlySpan<byte> buf, int offset, ref int byteFwd)
+    BufToString(ReadOnlySpan<byte> buf, ref int offset)
     {
-      int idx = offset;
-
       int decodedLen;
       try
       {
-        decodedLen = LenSerial.Decode(buf, idx, ref idx);
+        decodedLen = LenSerial.Decode(buf, ref offset);
       }
       catch (ArgumentOutOfRangeException)
       {
@@ -81,39 +78,19 @@ namespace BufSeria
 
       if (decodedLen == 0)
       {
-        byteFwd++;
         return "";
       }
 
       if (decodedLen < 0)
       {
-        byteFwd++;
         return null;
       }
 
-      string ret = Encoding.UTF8.GetString(buf.ToArray(), idx, decodedLen);
-      idx += decodedLen;
-
-      byteFwd += (idx - offset);
+      string ret = Encoding.UTF8.GetString(buf.ToArray(), offset, decodedLen);
+      offset += decodedLen;
 
       return ret;
     }
-
-    /// <summary>
-    ///   Builds a string from a serialized buffer.
-    ///   Starts at the first byte of the buffer.
-    /// </summary>
-    /// 
-    /// <param name="buf"> Serialized string buffer. </param>
-    /// 
-    /// <returns> Deserialized string. </returns
-    public static string
-    BufToString(byte[] buf)
-    {
-      int forward = 0;
-      return Serial.BufToString(buf, 0, ref forward);
-    }
-
 
 
   }

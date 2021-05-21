@@ -47,13 +47,12 @@ namespace BufSeria
     /// 
     /// <param name="buf"></param>
     /// <param name="offset"></param>
-    /// <param name="byteFwd"></param>
     /// <param name="c"></param>
     /// 
     /// <returns> True if the list was null, false otherwise. </returns>
     /// 
     public static bool
-    BufToCollection<T>(byte[] buf, int offset, ref int byteFwd, ICollection<T> c)
+    BufToCollection<T>(ReadOnlySpan<byte> buf, ref int offset, ICollection<T> c)
       where T : IBufSeriable, new()
     {
       if (c == null)
@@ -61,14 +60,10 @@ namespace BufSeria
         throw new NullReferenceException("ICollection to be filled by the deserialization must be initialized.");
       }
 
-      int idx = offset;
-      bool ret = false;
-
-      int count = Serial.BufToInt32(buf, idx, ref idx);
+      int count = Serial.BufToInt32(buf, ref offset);
       if (count < 0)
       {
-        ret = true;
-        goto set_fwd;
+        return true;
       }
 
       c.Clear();
@@ -76,13 +71,11 @@ namespace BufSeria
       for (int i = 0; i < count; i++)
       {
         T t = new T();
-        t.Deserialize(buf, idx, ref idx);
+        t.Deserialize(buf, ref offset);
         c.Add(t);
       }
 
-    set_fwd:
-      byteFwd += (idx - offset);
-      return ret;
+      return false;
     }
 
 
@@ -120,39 +113,31 @@ namespace BufSeria
     /// 
     /// <param name="buf"></param>
     /// <param name="offset"></param>
-    /// <param name="fwd"></param>
-    /// <param name="list"></param>
     /// 
     /// <returns> True if the list was null, false otherwise. </returns>
     /// 
     public static bool
-    BufToCollection(byte[] buf, int offset, ref int byteFwd, ICollection<string> c)
+    BufToCollection(byte[] buf, ref int offset, ICollection<string> c)
     {
       if (c == null)
       {
         throw new NullReferenceException("ICollection to be filled by the deserialization must be initialized.");
       }
 
-      int idx = offset;
-      bool ret = false;
-
-      int count = Serial.BufToInt32(buf, idx, ref idx);
+      int count = Serial.BufToInt32(buf, ref offset);
       if (count < 0)
       {
-        ret = true;
-        goto set_fwd;
+        return true;
       }
 
       c.Clear();
 
       for (int i = 0; i < count; i++)
       {
-        c.Add(Serial.BufToString(buf, idx, ref idx));
+        c.Add(Serial.BufToString(buf, ref offset));
       }
 
-    set_fwd:
-      byteFwd += (idx - offset);
-      return ret;
+      return false;
     }
 
 

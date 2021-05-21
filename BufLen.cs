@@ -87,8 +87,7 @@ namespace BufSeria
     /// </summary>
     /// 
     /// <param name="buf"> Buffer containing the encoded length. </param>
-    /// <param name="offset"> Offset of the first byte of the encoded length into the buffer. </param>
-    /// <param name="byteFwd"> Incremented by the number of bytes used to decode the length. </param>
+    /// <param name="offset"> Offset of the first byte of the encoded length into the buffer. </param
     /// 
     /// <returns> Decoded length value. </returns>
     /// 
@@ -97,15 +96,14 @@ namespace BufSeria
     /// <exception cref="BufSeriaException"> Provided offset is lower than 0. </exception>
     /// 
     public static int
-    Decode(ReadOnlySpan<byte> buf, int offset, ref int byteFwd)
+    Decode(ReadOnlySpan<byte> buf, ref int offset)
     {
       if (offset < 0)
       {
         throw new BufSeriaException("Offset can't be lower than 0.");
       }
 
-      byte l = buf[offset];
-      byteFwd++;
+      byte l = buf[offset++];
 
       if (l < (byte)EncodedLen.L16)
       {
@@ -121,24 +119,24 @@ namespace BufSeria
 
       else if (l == (byte)EncodedLen.L16)
       {
-        if (buf.Length - offset < 3)
+        if (buf.Length - offset < 2)
         {
           throw new IndexOutOfRangeException("Buffer too short to decode U16 encoded length.");
         }
 
-        return Serial.BufToUInt16(buf, offset + 1, ref byteFwd);
+        return Serial.BufToUInt16(buf, ref offset);
       }
 
       else
       {
         // L32.
 
-        if (buf.Length - offset < 5)
+        if (buf.Length - offset < 4)
         {
           throw new IndexOutOfRangeException("Buffer too short to decode U32 encoded length.");
         }
 
-        return Serial.BufToInt32(buf, offset + 1, ref byteFwd);
+        return Serial.BufToInt32(buf, ref offset);
       }
     }
   }

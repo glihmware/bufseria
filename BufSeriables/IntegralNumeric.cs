@@ -7,7 +7,12 @@ namespace BufSeria
   public static partial class Serial
   {
 
-    // SByte.
+    /// <summary>
+    ///   Signed byte serialization.
+    /// </summary>
+    /// <param name="s"></param>
+    /// <param name="ms"></param>
+    /// <returns></returns>
     public static int
     SByteToBuf(sbyte s, MemoryStream ms)
     {
@@ -15,19 +20,29 @@ namespace BufSeria
       return 1;
     }
 
+    /// <summary>
+    ///   Signed byte deserialization.
+    /// </summary>
+    /// <param name="buf"></param>
+    /// <param name="offset"></param>
+    /// <returns></returns>
     public static sbyte
-    BufToSByte(ReadOnlySpan<byte> buf, int offset, ref int byteFwd)
+    BufToSByte(ReadOnlySpan<byte> buf, ref int offset)
     {
       if (buf.Length - offset < 1)
       {
         throw new BufSeriaLenException("Buffer too short to deserialize SByte.");
       }
 
-      byteFwd++;
-      return (sbyte)buf[offset];
+      return (sbyte)buf[offset++];
     }
 
-    // Byte.
+    /// <summary>
+    ///   Byte serialization.
+    /// </summary>
+    /// <param name="b"></param>
+    /// <param name="ms"></param>
+    /// <returns></returns>
     public static int
     ByteToBuf(byte b, MemoryStream ms)
     {
@@ -35,20 +50,31 @@ namespace BufSeria
       return 1;
     }
 
+
+    /// <summary>
+    ///   Byte deserialization.
+    /// </summary>
+    /// <param name="buf"></param>
+    /// <param name="offset"></param>
+    /// <returns></returns>
     public static byte
-    BufToByte(ReadOnlySpan<byte> buf, int offset, ref int byteFwd)
+    BufToByte(ReadOnlySpan<byte> buf, ref int offset)
     {
       if (buf.Length - offset < 1)
       {
         throw new BufSeriaLenException("Buffer too short to deserialize Byte.");
       }
 
-      byteFwd++;
-      return buf[offset];
+      return buf[offset++];
     }
 
 
-    // UInt16.
+    /// <summary>
+    ///   UInt16 serialization.
+    /// </summary>
+    /// <param name="u"></param>
+    /// <param name="ms"></param>
+    /// <returns></returns>
     public static int
     UInt16ToBuf(ushort u, MemoryStream ms)
     {
@@ -61,8 +87,15 @@ namespace BufSeria
       return b.Length;
     }
 
+
+    /// <summary>
+    ///   UInt16 deserialization.
+    /// </summary>
+    /// <param name="buf"></param>
+    /// <param name="offset"></param>
+    /// <returns></returns>
     public static ushort
-    BufToUInt16(ReadOnlySpan<byte> buf, int offset, ref int byteFwd)
+    BufToUInt16(ReadOnlySpan<byte> buf, ref int offset)
     {
       if (buf.Length - offset < 2)
       {
@@ -71,12 +104,17 @@ namespace BufSeria
 
       ushort u = (ushort)(buf[offset] << 0 | buf[offset + 1] << 8);
 
-      byteFwd += 2;
+      offset += 2;
       return u;
     }
 
 
-    // Int16.
+    /// <summary>
+    ///   Int16 serialization.
+    /// </summary>
+    /// <param name="s"></param>
+    /// <param name="ms"></param>
+    /// <returns></returns>
     public static int
     Int16ToBuf(short s, MemoryStream ms)
     {
@@ -89,8 +127,15 @@ namespace BufSeria
       return b.Length;
     }
 
+
+    /// <summary>
+    ///   Int16 deserialization.
+    /// </summary>
+    /// <param name="buf"></param>
+    /// <param name="offset"></param>
+    /// <returns></returns>
     public static short
-    BufToInt16(ReadOnlySpan<byte> buf, int offset, ref int byteFwd)
+    BufToInt16(ReadOnlySpan<byte> buf, ref int offset)
     {
       if (buf.Length - offset < 2)
       {
@@ -99,12 +144,17 @@ namespace BufSeria
 
       short s = (short)(buf[offset] << 0 | buf[offset + 1] << 8);
 
-      byteFwd += 2;
+      offset += 2;
       return s;
     }
 
 
-    // UInt32.
+    /// <summary>
+    ///   UInt32 serialization.
+    /// </summary>
+    /// <param name="u"></param>
+    /// <param name="ms"></param>
+    /// <returns></returns>
     public static int
     UInt32ToBuf(uint u, MemoryStream ms)
     {
@@ -119,8 +169,15 @@ namespace BufSeria
       return b.Length;
     }
 
+
+    /// <summary>
+    ///   UInt32 deserialization.
+    /// </summary>
+    /// <param name="buf"></param>
+    /// <param name="offset"></param>
+    /// <returns></returns>
     public static uint
-    BufToUInt32(ReadOnlySpan<byte> buf, int offset, ref int byteFwd)
+    BufToUInt32(ReadOnlySpan<byte> buf, ref int offset)
     {
       if (buf.Length - offset < 4)
       {
@@ -131,12 +188,17 @@ namespace BufSeria
       uint u = (uint)
         (buf[o + 0] << 0 | buf[o + 1] << 8 | buf[o + 2] << 16 | buf[o + 3] << 24);
 
-      byteFwd += 4;
+      offset += 4;
       return u;
     }
 
 
-    // Int32.
+    /// <summary>
+    ///   Int32 serialization.
+    /// </summary>
+    /// <param name="i"></param>
+    /// <param name="ms"></param>
+    /// <returns></returns>
     public static int
     Int32ToBuf(int i, MemoryStream ms)
     {
@@ -151,8 +213,14 @@ namespace BufSeria
       return b.Length;
     }
 
+    /// <summary>
+    ///   Int32 deserialization.
+    /// </summary>
+    /// <param name="buf"></param>
+    /// <param name="offset"></param>
+    /// <returns></returns>
     public static int
-    BufToInt32(ReadOnlySpan<byte> buf, int offset, ref int byteFwd)
+    BufToInt32(ReadOnlySpan<byte> buf, ref int offset)
     {
       if (buf.Length - offset < 4)
       {
@@ -163,12 +231,17 @@ namespace BufSeria
       int i = (int)
         (buf[o + 0] << 0 | buf[o + 1] << 8 | buf[o + 2] << 16 | buf[o + 3] << 24);
 
-      byteFwd += 4;
+      offset += 4;
       return i;
     }
 
 
-    // UInt64.
+    /// <summary>
+    ///   UInt64 serialization.
+    /// </summary>
+    /// <param name="u"></param>
+    /// <param name="ms"></param>
+    /// <returns></returns>
     public static int
     UInt64ToBuf(ulong u, MemoryStream ms)
     {
@@ -187,8 +260,15 @@ namespace BufSeria
       return b.Length;
     }
 
+
+    /// <summary>
+    ///   UInt64 deserialization.
+    /// </summary>
+    /// <param name="buf"></param>
+    /// <param name="offset"></param>
+    /// <returns></returns>
     public static ulong
-    BufToUInt64(ReadOnlySpan<byte> buf, int offset, ref int byteFwd)
+    BufToUInt64(ReadOnlySpan<byte> buf, ref int offset)
     {
       if (buf.Length - offset < 8)
       {
@@ -203,12 +283,17 @@ namespace BufSeria
         (ulong)(buf[o + 4]) << 32 | (ulong)(buf[o + 5]) << 40 | (ulong)(buf[o + 6]) << 48 | (ulong)(buf[o + 7]) << 56
         );
 
-      byteFwd += 8;
+      offset += 8;
       return u;
     }
 
 
-    // Int64.
+    /// <summary>
+    ///   Int64 serialization.
+    /// </summary>
+    /// <param name="l"></param>
+    /// <param name="ms"></param>
+    /// <returns></returns>
     public static int
     Int64ToBuf(long l, MemoryStream ms)
     {
@@ -227,8 +312,14 @@ namespace BufSeria
       return b.Length;
     }
 
+    /// <summary>
+    ///   Int64 deserialization.
+    /// </summary>
+    /// <param name="buf"></param>
+    /// <param name="offset"></param>
+    /// <returns></returns>
     public static long
-    BufToInt64(ReadOnlySpan<byte> buf, int offset, ref int byteFwd)
+    BufToInt64(ReadOnlySpan<byte> buf, ref int offset)
     {
       if (buf.Length - offset < 8)
       {
@@ -243,7 +334,7 @@ namespace BufSeria
         (long)(buf[o + 4]) << 32 | (long)(buf[o + 5]) << 40 | (long)(buf[o + 6]) << 48 | (long)(buf[o + 7]) << 56
         );
 
-      byteFwd += 8;
+      offset += 8;
       return l;
     }
 

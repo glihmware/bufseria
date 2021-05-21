@@ -29,38 +29,37 @@ namespace BufSeria
     /// 
     /// <param name="buf"> Stream serialized buffer. </param>
     /// <param name="offset"> Byte offset where deserialization starts. </param>
-    /// <param name="forward"> Number of bytes consumed to deserialized. </param>
     /// 
     /// <returns> Deserialized stream, or null. </returns>
     ///
     /// <exception cref = "BufSeriaException" > Deserialization can't occur. </exception>
     /// 
     public static MemoryStream
-    BufToStream(byte[] buf, int offset, ref int byteFwd)
+    BufToStream(ReadOnlySpan<byte> buf, ref int offset)
     {
-      int idx = offset;
-      int len = LenSerial.Decode(buf, idx, ref idx);
+      int len = LenSerial.Decode(buf, ref offset);
 
       if (len < 0)
       {
         // Stream was null.
-        byteFwd += (idx - offset);
         return null;
       }
 
       if (len == 0)
       {
-        byteFwd += (idx - offset);
         return new MemoryStream();
       }
 
+      // Need extra check... (buf.Length - offset) should be greater or equal to decoded len.
+
       byte[] arr = new byte[len];
-      Array.Copy(buf, idx, arr, 0, len);
+      Span<byte> s = new Span<byte>(arr);
+
+      buf.Slice(offset, len).CopyTo(s);
+
       MemoryStream ms = new MemoryStream(arr);
 
-      idx += len;
-
-      byteFwd += (idx - offset);
+      offset += len;
       return ms;
     }
   }
